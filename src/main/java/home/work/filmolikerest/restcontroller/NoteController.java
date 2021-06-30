@@ -2,12 +2,10 @@ package home.work.filmolikerest.restcontroller;
 
 import home.work.filmolikerest.dto.NoteDto;
 import home.work.filmolikerest.model.Note;
-import home.work.filmolikerest.model.User;
 import home.work.filmolikerest.service.NoteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * REST controller user connected requests.
+ * REST controller for user's connected requests.
  */
 
 @RestController
@@ -33,7 +31,8 @@ public class NoteController {
     }
 
     @GetMapping("/notes")
-    public ResponseEntity<List<NoteDto>> getNotes() {
+    public ResponseEntity<List<NoteDto>> getNotes()
+    {
         try {
             final List<NoteDto> notes = noteService.getNotes().stream().map(NoteDto::toDto).collect(Collectors.toList());
 
@@ -48,9 +47,9 @@ public class NoteController {
     @GetMapping("/note/{id}")
     public ResponseEntity<?> getNoteById(@PathVariable @Min(1) Long id)
     {
-        Note foundNote = noteService.getById(id);
+        final NoteDto foundNote = noteService.getById(id);
 
-        if (foundNote.equals(Note.NULL_NOTE)) {
+        if (foundNote.equals(NoteDto.NULL_NOTE)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Not found or No rights for viewing note with id %d", id));
         }
 
@@ -65,7 +64,8 @@ public class NoteController {
     }
 
     @PostMapping("/note")
-    public ResponseEntity<NoteDto> saveNote(@Valid @RequestBody NoteDto noteDto) {
+    public ResponseEntity<NoteDto> saveNote(@Valid @RequestBody NoteDto noteDto)
+    {
         log.info("IN saveNote - Received note: title: {}, watched: {}, estimate: {}", noteDto.getTitle(), noteDto.getWatched(), noteDto.getEstimate());
 
         final Note note = noteDto.toNote();
@@ -83,67 +83,32 @@ public class NoteController {
         }
     }
 
-    @PostMapping("/note2")
-    public ResponseEntity<NoteDto> saveNote2(
-            @Valid @RequestBody NoteDto noteDto
-    ) {
-        log.info("IN saveNote - Received note: title: {}, watched: {}, estimate: {}", noteDto.getTitle(), noteDto.getWatched(), noteDto.getEstimate());
+    @PutMapping("/note/{id}")
+    public ResponseEntity<?> updateNote(
+            @PathVariable Long id,
+            @Valid @RequestBody NoteDto noteDto)
+    {
 
-        Note savedNote = noteService.save(noteDto.toNote());
+        Note updatedNote = noteService.update(id, noteDto.toNote());
 
-        log.info("IN saveNote - Saved note: id: {}, title: {}, watched: {}, estimate: {}", savedNote.getId(), savedNote.getTitle(), savedNote.isWatched(), savedNote.getEstimate());
+        if (updatedNote.equals(Note.NULL_NOTE)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Not found or No rights for updating note with id %d", id));
+        }
 
         try {
             return ResponseEntity
-                    .created(new URI("/rest/note/" + savedNote.getId()))
-                    .body(NoteDto.toDto(savedNote));
+                    .ok()
+                    .location(new URI("/rest/note/" + updatedNote.getId()))
+                    .body(NoteDto.toDto(updatedNote));
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
-
-//
-//    @PutMapping("/note/{id}")
-//    public ResponseEntity<?> updateNote(
-//            @PathVariable Long id,
-//            @Valid @RequestBody NoteDto noteDto,
-//            @AuthenticationPrincipal User user
-//    ) {
-//        Optional<Note> noteOptional = noteService.findById(id);
-//
-//        if (!noteOptional.isPresent()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        Note foundNote = noteOptional.get();
-//
-//        if (hasNotRights(foundNote, user)) {
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Нет прав для изменения данных");
-//        }
-//
-//        Note updatingNote = NoteConverter.toDomain(noteDto);
-//        updatingNote.setId(id);
-//
-//        Note updatedNote = noteService.save(updatingNote, user);
-//
-//        try {
-//            return ResponseEntity
-//                    .ok()
-//                    .location(new URI("/rest/note/" + updatedNote.getId()))
-//                    .body(NoteConverter.toDto(updatedNote));
-//        } catch (URISyntaxException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-//
     @DeleteMapping("/note/{id}")
-    public ResponseEntity<?> deleteNote(
-            @PathVariable Long id,
-            @AuthenticationPrincipal User user)
+    public ResponseEntity<?> deleteNote(@PathVariable Long id)
     {
-        boolean isDeleted = noteService.delete(id, user);
+        boolean isDeleted = noteService.delete(id);
 
         if (isDeleted) {
             return ResponseEntity.ok().body("Note was deleted successful");
@@ -151,10 +116,5 @@ public class NoteController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(String.format("Not found or No rights for deleting note with id %d", id));
         }
     }
-
-    private boolean hasNotRights(Note note, User user) {
-        return !user.equals(note.getUser());
-    }
-//
 
 }

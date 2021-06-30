@@ -16,7 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+
+/**
+ * Implementation of {@link NoteService} interface.
+ * Wrapper for {@link NoteRepository} + business logic.
+ */
+
 
 @Service
 @Transactional
@@ -29,20 +35,21 @@ public class NoteServiceImpl implements NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public List<Note> findAll() {
-        return noteRepository.findAll();
+    @Override
+    public List<Note> getNotes() {
+        return noteRepository.findByUser(getUserFromContext());
     }
 
+    public NoteDto getById(Long id) {
 
-//    public List<NoteDto> findByUser(User user) {
-//        return null;
-//    }
+        final Note note = noteRepository.findByIdAndUser(id, getUserFromContext()).orElse(Note.NULL_NOTE);
+        if (note.equals(Note.NULL_NOTE)) {
+            return NoteDto.NULL_NOTE;
+        } else {
+            return NoteDto.toDto(note);
+        }
+    }
 
-
-//    public Note save(Note note) {
-//        return noteRepo.save(note);
-//    }
-//
     public Note save(Note note) {
 
         note.setUser(getUserFromContext());
@@ -51,6 +58,35 @@ public class NoteServiceImpl implements NoteService {
         log.info("IN save - Saving note: title: {}, watched: {}, estimate: {}", note.getTitle(), note.isWatched(), note.getEstimate());
 
         return noteRepository.save(note);
+    }
+
+    public Note update(Long id, Note note) {
+
+        final Note updatingNote = noteRepository.findByIdAndUser(id, getUserFromContext()).orElse(Note.NULL_NOTE);
+
+        if (updatingNote.equals(Note.NULL_NOTE)) {
+            return Note.NULL_NOTE;
+        }
+
+        updatingNote.setTitle(note.getTitle());
+        updatingNote.setWatched(note.isWatched());
+        updatingNote.setEstimate(note.getEstimate());
+
+        updatingNote.setChangedDate(LocalDateTime.now());
+
+        return noteRepository.save(updatingNote);
+    }
+
+    public boolean delete(Long id) {
+        Optional<Note> optionalNote = noteRepository.findByIdAndUser(id, getUserFromContext());
+
+        if (!optionalNote.isPresent()) {
+            return false;
+        }
+
+        noteRepository.deleteById(id);
+
+        return true;
     }
 
     private User getUserFromContext() {
@@ -65,45 +101,5 @@ public class NoteServiceImpl implements NoteService {
         } else {
             throw new JwtAuthenticationException("");
         }
-    }
-
-    //
-//    public Note get(long id) {
-//        return noteRepo.getOne(id);
-//    }
-//
-    public Note getById(Long id) {
-
-        return noteRepository.findByIdAndUser(id, getUserFromContext()).orElse(Note.NULL_NOTE);
-    }
-//
-    public boolean delete(Long id, User user) {
-        Optional<Note> optionalNote = noteRepository.findByIdAndUser(id, user);
-
-        if (!optionalNote.isPresent()) {
-            return false;
-        }
-
-        noteRepository.deleteById(id);
-
-        return true;
-    }
-//
-//    public NoteDto findByIdDto(Long id) {
-//        Optional<Note> noteFromDb = noteRepo.findById(id);
-//
-//        return noteFromDb.map(NoteConverter::toDto).orElse(NoteConverter.NULL_NOTE);
-//    }
-//
-//    public List<NoteDto> findAllDto() {
-//        return noteRepo.findAll().stream()
-//                .map(NoteConverter::toDto)
-//                .collect(Collectors.toList());
-//    }
-//
-
-    @Override
-    public List<Note> getNotes() {
-        return noteRepository.findByUser(getUserFromContext());
     }
 }

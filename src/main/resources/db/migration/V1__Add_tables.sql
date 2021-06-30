@@ -24,6 +24,16 @@ create table user_roles (
 	role_id int8 not null
 );
 
+create table notes (
+    id bigserial not null,
+    changed timestamp,
+    estimate varchar(255),
+    title varchar(50) not null,
+    watched boolean not null,
+    user_id int8,
+    primary key (id)
+);
+
 alter table if exists user_roles
 	add constraint user_roles_roles_fk
 	foreign key (role_id) references roles;
@@ -31,3 +41,7 @@ alter table if exists user_roles
 alter table if exists user_roles
 	add constraint user_roles_users_fk
 	foreign key (user_id) references users;
+
+alter table if exists notes
+    add constraint notes_user_fk
+    foreign key (user_id) references users;

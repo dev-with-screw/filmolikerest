@@ -2,7 +2,6 @@ package home.work.filmolikerest.model;
 
 
 import lombok.Data;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -19,8 +18,8 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Поле не должно быть пустым")
-    @Length(max = 50, message = "Должно содержать не более 50 символов")
+    @NotBlank
+    @Length(max = 50)
     private String title;
 
     private boolean watched;
@@ -30,10 +29,6 @@ public class Note {
 
     @Column(name = "changed")
     private LocalDateTime changedDate;
-
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @Column(name = "user_id")
-//    private Long userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
