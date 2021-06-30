@@ -1,6 +1,6 @@
 package home.work.filmolikerest.restcontroller;
 
-import home.work.filmolikerest.dto.TestReq;
+import home.work.filmolikerest.dto.TestRequest;
 import home.work.filmolikerest.model.User;
 import home.work.filmolikerest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @Validated
-public class TestContr {
+public class TestController {
     @Autowired
     private UserRepository userRepository;
 
@@ -30,7 +30,7 @@ public class TestContr {
     }
 
     @PostMapping("/test3")
-    public String test3(@RequestBody TestReq t) {
+    public String test3(@RequestBody TestRequest t) {
         return t.getSmb();
     }
 }

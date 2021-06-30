@@ -62,7 +62,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
 
-        return new ResponseEntity<Object>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
     }
 
     //handling TypeMismatchException and MethodArgumentTypeMismatchException
@@ -99,30 +99,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
     }
 
-//    @Override
-//    protected ResponseEntity<Object> handleHttpMessageNotReadable(
-//            HttpMessageNotReadableException ex,
-//            HttpHeaders headers,
-//            HttpStatus status,
-//            WebRequest request) {
-//
-//        String error = null;
-//
-//        try {
-//            InputStream bodyStream = ex.getHttpInputMessage().getBody();
-//            try (BufferedReader br = new BufferedReader(new InputStreamReader(bodyStream))) {
-//                error = "Body of request - " + br.lines().collect(Collectors.joining("\n"));
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException("cant read body");
-//        }
-//
-//        ApiError apiError = new ApiError(LocalDateTime.now(), HttpStatus.BAD_REQUEST, ex.getMessage(), error);
-//
-//        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
-//
-////        return super.handleHttpMessageNotReadable(ex, headers, status, request);
-//    }
+
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentials(
@@ -145,14 +122,13 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_ACCEPTABLE, ex.getLocalizedMessage(), error);
 
-        return new ResponseEntity<Object>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), "error occurred");
 
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
-
     }
 }

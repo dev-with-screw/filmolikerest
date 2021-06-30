@@ -87,28 +87,6 @@ public class UserServiceImpl implements UserService {
         log.info("IN delete - user with id: {} successfully deleted", id);
     }
 
-//        Optional<User> byUsername = userRepository.findByUsername(username);
-
-//        if (byUsername.isPresent()) {
-//            log.info("IN checkForUnique - found by username {}", username);
-//            String emailOfFound = byUsername.get().getEmail();
-//            if (emailOfFound.equals(email)){
-//                return String.format("User with username= \"%s\" and email= \"%s\" already registered", username, email);
-//            }
-//            return String.format("User with username= \"%s\" already registered", username);
-//        }
-//
-//        Optional<User> byEmail = userRepository.findByEmail(email);
-//
-//        if (byEmail.isPresent()) {
-//            log.info("IN checkForUnique - found by email {}", email);
-//            return String.format("User with email= \"%s\" already registered", email);
-//        }
-//
-//        log.info("IN checkForUnique - no user found by username {} and email {}", username, email);
-//        return "unique";
-//    }
-
     public RegistrationStatus register(User user) {
 
         final SearchingStatus status = checkUniqueUsernameAndEmail(user.getUsername(), user.getEmail());
