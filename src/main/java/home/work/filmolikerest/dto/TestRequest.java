@@ -1,8 +1,12 @@
 package home.work.filmolikerest.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
-public class TestRequest {
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class TestRequest
+{
     private String smb;
 }

@@ -1,25 +1,18 @@
 package home.work.filmolikerest.restcontroller;
 
 import home.work.filmolikerest.dto.TestRequest;
-import home.work.filmolikerest.model.User;
-import home.work.filmolikerest.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
-import java.util.List;
 
 @RestController
 @Validated
-public class TestController {
-    @Autowired
-    private UserRepository userRepository;
+public class TestController
+{
 
     @GetMapping("/test")
     public String test() {
-        final List<User> all = userRepository.findAll();
-
         return "ok";
     }
 

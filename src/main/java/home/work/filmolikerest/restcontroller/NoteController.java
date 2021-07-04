@@ -3,6 +3,7 @@ package home.work.filmolikerest.restcontroller;
 import home.work.filmolikerest.dto.NoteDto;
 import home.work.filmolikerest.model.Note;
 import home.work.filmolikerest.service.NoteService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +17,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * REST controller for user's connected requests.
- */
-
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 @Validated
-public class NoteController {
+public class NoteController
+{
     private final NoteService noteService;
-
-    public NoteController(NoteService noteService) {
-        this.noteService = noteService;
-    }
 
     @GetMapping("/notes")
     public ResponseEntity<List<NoteDto>> getNotes()

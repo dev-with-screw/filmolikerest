@@ -7,6 +7,7 @@ import home.work.filmolikerest.model.User;
 import home.work.filmolikerest.repository.RoleRepository;
 import home.work.filmolikerest.repository.UserRepository;
 import home.work.filmolikerest.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,26 +18,15 @@ import java.util.*;
 
 import static home.work.filmolikerest.model.User.NULL_USER;
 
-/**
- * Implementation of {@link UserService} interface.
- * Wrapper for {@link UserRepository} + business logic.
- */
-
 @Service
 @Transactional
+@RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
-
+public class UserServiceImpl implements UserService
+{
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public List<User> getAll() {
         List<User> users = userRepository.findAll();

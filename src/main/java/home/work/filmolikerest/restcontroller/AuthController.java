@@ -6,6 +6,7 @@ import home.work.filmolikerest.enums.RegistrationStatus;
 import home.work.filmolikerest.model.User;
 import home.work.filmolikerest.security.jwt.JwtTokenProvider;
 import home.work.filmolikerest.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,24 +28,16 @@ import java.util.Map;
  */
 
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 @Validated
-public class AuthController {
-
+public class AuthController
+{
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenProvider jwtTokenProvider;
 
     private final UserService userService;
-
-    @Autowired
-    public AuthController(
-            AuthenticationManager authenticationManager,
-            JwtTokenProvider jwtTokenProvider, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequestDto requestDto) {

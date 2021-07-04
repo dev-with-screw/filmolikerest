@@ -12,15 +12,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-/**
- * Simple domain object that represents application user.
- */
-
 @Entity
 @Table(name = "users")
 @Data
-public class User implements UserDetails {
+public class User implements UserDetails
+{
     public static final User NULL_USER = new User();
 
     @Id

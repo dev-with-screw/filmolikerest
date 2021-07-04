@@ -3,7 +3,7 @@ package home.work.filmolikerest.security.jwt;
 import home.work.filmolikerest.model.Role;
 import home.work.filmolikerest.model.User;
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,21 +20,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Util class that provides methods for generation, validation, etc. of JWT token.
- */
-
 @Component
-public class JwtTokenProvider {
+@RequiredArgsConstructor
+public class JwtTokenProvider
+{
+    private final UserDetailsService userDetailsService;
 
     @Value("${jwt.token.secret}")
     private String secret;
 
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -106,15 +102,6 @@ public class JwtTokenProvider {
     }
 
     private List<String> getRoleNames(List<Role> userRoles) {
-//        List<String> result = new ArrayList<>();
-//
-//        userRoles.forEach(role -> {
-//            result.add(role.getName());
-//        });
-//
-//        return result;
-
         return userRoles.stream().map(Role::getName).collect(Collectors.toList());
-
     }
 }

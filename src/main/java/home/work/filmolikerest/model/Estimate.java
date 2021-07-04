@@ -1,6 +1,7 @@
 package home.work.filmolikerest.model;
 
-public enum Estimate {
+public enum Estimate
+{
     NOT_ESTIMATE("Без оценки"),
     TERRIBLE("Ужасно"),
     POOR("Плохо"),

@@ -1,5 +1,6 @@
 package home.work.filmolikerest.validation;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
@@ -8,23 +9,15 @@ import java.util.Collections;
 import java.util.List;
 
 @Getter
-public class ErrorResponse {
-
-    private LocalDateTime timestamp;
-    private HttpStatus status;
-    private String message;
-    private List<String> errors;
-
-    public ErrorResponse(LocalDateTime timestamp, HttpStatus status, String message, List<String> errors) {
-        super();
-        this.timestamp = timestamp;
-        this.status = status;
-        this.message = message;
-        this.errors = errors;
-    }
+@AllArgsConstructor
+public class ErrorResponse
+{
+    private final LocalDateTime timestamp;
+    private final HttpStatus status;
+    private final String message;
+    private final List<String> errors;
 
     public ErrorResponse(LocalDateTime timestamp, HttpStatus status, String message, String error) {
-        super();
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;

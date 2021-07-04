@@ -5,11 +5,8 @@ import home.work.filmolikerest.model.Note;
 
 import java.util.List;
 
-/**
- * Service interface for class {@link Note}.
- */
-
-public interface NoteService {
+public interface NoteService
+{
     List<Note> getNotes();
 
     NoteDto getById(Long id);

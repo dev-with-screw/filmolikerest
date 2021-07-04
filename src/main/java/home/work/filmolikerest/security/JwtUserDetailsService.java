@@ -1,31 +1,20 @@
 package home.work.filmolikerest.security;
 
 import home.work.filmolikerest.model.User;
-import home.work.filmolikerest.repository.UserRepository;
 import home.work.filmolikerest.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-/**
- * Implementation of {@link UserDetailsService} interface for {@link User}.
- */
-
 @Service
+@RequiredArgsConstructor
 @Slf4j
-public class JwtUserDetailsService implements UserDetailsService {
-
+public class JwtUserDetailsService implements UserDetailsService
+{
     private final UserService userService;
-
-    @Autowired
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

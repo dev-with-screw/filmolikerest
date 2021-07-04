@@ -12,9 +12,10 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = EnumValidatorImpl.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-@NotNull(message = "Не должно быть null")
+@NotNull(message = "Should not be null")
 @ReportAsSingleViolation
-public @interface EnumValidator {
+public @interface EnumValidator
+{
     Class<? extends Enum<?>> enumClazz();
     String message() default "Должно содержать значение из соответствующего enum";
     Class<?>[] groups() default {};

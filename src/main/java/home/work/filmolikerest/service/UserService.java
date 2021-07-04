@@ -5,12 +5,8 @@ import home.work.filmolikerest.model.User;
 
 import java.util.List;
 
-/**
- * Service interface for class {@link User}.
- */
-
-public interface UserService {
-
+public interface UserService
+{
     List<User> getAll();
 
     User findById(Long id);

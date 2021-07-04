@@ -5,8 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnumValidatorImpl implements ConstraintValidator<EnumValidator, String> {
-
+public class EnumValidatorImpl implements ConstraintValidator<EnumValidator, String>
+{
     private List<String> valueList = null;
 
     @Override

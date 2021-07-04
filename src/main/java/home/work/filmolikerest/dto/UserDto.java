@@ -2,16 +2,15 @@ package home.work.filmolikerest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import home.work.filmolikerest.model.User;
-import lombok.Data;
+import lombok.*;
 
-
-/**
- * DTO class for user requests by ROLE_USER
- */
-
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto {
+public class UserDto
+{
     private Long id;
     private String username;
     private String firstName;

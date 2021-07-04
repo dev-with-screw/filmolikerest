@@ -5,17 +5,14 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * Simple domain object that represents application user's role - ADMIN, USER, etc.
- */
-
 // В проекте filmolike реализация списка ролей сделана через enum.
 // Реализация через enum, думаю, более правильная. Чтобы лишний раз не обращаться в базу за списком ролей.
-// Но тут оставлено в таком виде, для того, чтобы всегда перед глазами был пример c использованием @JoinTable
+// Но тут оставлено в таком виде, чтобы показать реализацию c использованием @JoinTable
 @Entity
 @Table(name = "roles")
 @Data
-public class Role {
+public class Role
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

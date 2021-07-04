@@ -6,6 +6,7 @@ import home.work.filmolikerest.model.User;
 import home.work.filmolikerest.repository.NoteRepository;
 import home.work.filmolikerest.security.jwt.JwtAuthenticationException;
 import home.work.filmolikerest.service.NoteService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,23 +18,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-
-/**
- * Implementation of {@link NoteService} interface.
- * Wrapper for {@link NoteRepository} + business logic.
- */
-
-
 @Service
 @Transactional
+@RequiredArgsConstructor
 @Slf4j
-public class NoteServiceImpl implements NoteService {
-
+public class NoteServiceImpl implements NoteService
+{
     private final NoteRepository noteRepository;
-
-    public NoteServiceImpl(NoteRepository noteRepository) {
-        this.noteRepository = noteRepository;
-    }
 
     @Override
     public List<Note> getNotes() {

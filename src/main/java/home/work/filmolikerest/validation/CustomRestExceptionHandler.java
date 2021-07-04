@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
-public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
-
+public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler
+{
     // handling BindException and MethodArgumentNotValidException
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -98,8 +98,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), errorResponse.getStatus());
     }
-
-
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentials(

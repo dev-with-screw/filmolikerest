@@ -2,19 +2,19 @@ package home.work.filmolikerest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import home.work.filmolikerest.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RegistrationRequestDto {
+public class RegistrationRequestDto
+{
     @NotBlank
     @Length(min=1, max=100)
     private String username;

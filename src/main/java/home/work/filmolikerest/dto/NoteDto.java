@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import home.work.filmolikerest.model.Estimate;
 import home.work.filmolikerest.model.Note;
 import home.work.filmolikerest.validation.EnumValidator;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -14,10 +12,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class NoteDto {
+@NoArgsConstructor
+@Setter
+@Getter
+public class NoteDto
+{
     private Long id;
 
     @NotBlank(message = "Shouldn't be empty")

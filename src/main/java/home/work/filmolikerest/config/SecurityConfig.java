@@ -3,29 +3,19 @@ package home.work.filmolikerest.config;
 
 import home.work.filmolikerest.security.jwt.JwtConfigurer;
 import home.work.filmolikerest.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-/**
- * Security configuration class for JWT based Spring Security application.
- */
 
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+@RequiredArgsConstructor
+public class SecurityConfig extends WebSecurityConfigurerAdapter
+{
     private final JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Bean
     @Override

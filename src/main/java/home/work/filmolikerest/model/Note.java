@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "notes")
 @Data
-public class Note {
+public class Note
+{
     public final static Note NULL_NOTE = new Note();
 
     @Id
