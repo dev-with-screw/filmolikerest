@@ -10,6 +10,7 @@ import home.work.filmolikerest.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +21,22 @@ import static home.work.filmolikerest.model.User.NULL_USER;
 
 @Service
 @Transactional
-@NoArgsConstructor
-@AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService
 {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserServiceImpl() {
+    }
 
     public User findById(Long id) {
         User user = userRepository.findById(id).orElse(NULL_USER);

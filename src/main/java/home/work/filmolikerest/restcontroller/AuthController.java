@@ -33,7 +33,7 @@ import java.util.Map;
 @Validated
 public class AuthController
 {
-    private final AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
 
     private final JwtTokenProvider jwtTokenProvider;
 
