@@ -7,9 +7,9 @@ import home.work.filmolikerest.model.User;
 import home.work.filmolikerest.repository.RoleRepository;
 import home.work.filmolikerest.repository.UserRepository;
 import home.work.filmolikerest.service.UserService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,19 +20,14 @@ import static home.work.filmolikerest.model.User.NULL_USER;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService
 {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
-
-    public List<User> getAll() {
-        List<User> users = userRepository.findAll();
-        log.info("IN getAll - {} users found", users.size());
-        return users;
-    }
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
     public User findById(Long id) {
         User user = userRepository.findById(id).orElse(NULL_USER);
@@ -47,15 +42,15 @@ public class UserServiceImpl implements UserService
     }
 
     public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElse(NULL_USER);
+        Optional<User> user = userRepository.findByUsername(username);
 
-        if (user.equals(NULL_USER)) {
-            log.warn("IN findByUsername - no user found by username: {}", username);
+        if (user.isPresent()) {
+            log.info("IN findByUsername - user with id {} found by username: {}", user.get().getId(), username);
+            return user.get();
         } else {
-            log.info("IN findByUsername - user with id {} found by username: {}", user.getId(), username);
+            log.warn("IN findByUsername - no user found by username: {}", username);
+            return NULL_USER;
         }
-
-        return user;
     }
 
     public User findByUsernameAndPassword(String username, String password) {
@@ -69,12 +64,6 @@ public class UserServiceImpl implements UserService
             }
         }
         return NULL_USER;
-
-    }
-
-    public void delete(Long id) {
-        userRepository.deleteById(id);
-        log.info("IN delete - user with id: {} successfully deleted", id);
     }
 
     public RegistrationStatus register(User user) {
@@ -93,12 +82,8 @@ public class UserServiceImpl implements UserService
             }
         }
 
-        Role roleUser = roleRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleUser);
-
+        user.setRoles(addUserRole());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
 
         User registeredUser = userRepository.save(user);
 
@@ -136,6 +121,13 @@ public class UserServiceImpl implements UserService
         }
 
         return SearchingStatus.NOT_FOUND;
+    }
+
+    private List<Role> addUserRole() {
+        Role roleUser = roleRepository.findByName("ROLE_USER");
+        List<Role> userRoles = new ArrayList<>();
+        userRoles.add(roleUser);
+        return userRoles;
     }
 
 }
